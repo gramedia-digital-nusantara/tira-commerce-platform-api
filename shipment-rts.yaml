@@ -1,0 +1,92 @@
+openapi: 3.1.0
+x-stoplight:
+  id: j4u63hsvn4fr5
+info:
+  version: '1.0'
+  title: shipment-rts
+servers:
+  - url: 'https://dev-webstore.bhisma.cloud'
+    description: Dev V3 Bhisma
+paths:
+  /api/v1/admin/order/ready-to-ship/:
+    post:
+      summary: ReadyToShip
+      description: 'This api is used to process shipment of the order, should be called after the order is packed and ready to ship. '
+      operationId: post-api-v1-admin-order-ready-to-ship
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                order_number:
+                  type: string
+              x-examples:
+                Example 1:
+                  order_number: INV/AAA2023/250723/238/C1
+            examples:
+              Example 1:
+                value:
+                  order_number: INV/AAA2023/010823/612/C1
+      responses:
+        '200':
+          $ref: '#/components/responses/Sucess-RTS'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                x-examples:
+                  Example 1:
+                    message: 'Invalid Order status, current status: ready_to_ship'
+              examples:
+                Invalid Current Status:
+                  value:
+                    message: 'Invalid Order status, current status: ready_to_ship'
+      security:
+        - SecretKey: []
+      servers:
+        - url: 'https://dev-webstore.bhisma.cloud'
+          description: Dev V3 Bhisma
+      x-stoplight:
+        id: 2j9dhxci8rk8s
+components:
+  securitySchemes:
+    SecretKey:
+      type: http
+      scheme: bearer
+  responses:
+    Sucess-RTS:
+      description: |
+        Exanple sucess calling the API
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              awb_number:
+                type: string
+              message:
+                type: string
+              order_number:
+                type: string
+              shipping_label:
+                type: string
+            x-examples:
+              Example 1:
+                awb_number: KGX2580012350
+                message: AWB Generated Successfully
+                order_number: INV/AAA2023/070823/628/C1
+                shipping_label: 'https://dev-webstore.bhisma.cloud/portal/order-shipping-label/3633352338393435353833646265383661346263376164316164386531373034313837366237316533336266313733366137373736663763346165656130376231316463/'
+          examples:
+            Example 1:
+              value:
+                awb_number: KGX2580012350
+                message: AWB Generated Successfully
+                order_number: INV/AAA2023/070823/628/C1
+                shipping_label: 'https://dev-webstore.bhisma.cloud/portal/order-shipping-label/3633352338393435353833646265383661346263376164316164386531373034313837366237316533336266313733366137373736663763346165656130376231316463/'
